@@ -68,9 +68,9 @@
             %a.dropdown-item.feature{:href => expand_link('projects/')}
               = t('.overview')
             - site.pages.map do |page|
-              - next unless page.url.match(/\/projects\/(\w+)\/$/)
+              - next unless page.url.match(/\/projects\/([^\/]+)\/$/)
               %a.dropdown-item.feature{:href => expand_link(page.url)}
-                = page.title
+                = '&nbsp;-&nbsp;' + page.title
 
         %li.nav-item.dropdown
           .nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button"}
