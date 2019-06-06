@@ -2342,6 +2342,223 @@
   # pull: 3944 (Fold tests back into normal files)
   # pull: 3933 (Update Jenkins initialization logging on FINE level to not log stack trace per extension)
   # pull: 3425 (fix a "not-yet-existing" bug introduced in #3402)
+- version: 2.174
+  date: 2019-04-21
+  changes:
+  - type: bug
+    pull: 3925
+    issue: 56403
+    message: |-
+      重命名一个代理节点，保持旧的配置，导致重启后旧的代理节点再次出现。
+    # 在功能退化中没有提到，因为它显然已经存在了3年（自 Jenkins 2.8）
+  - type: rfe
+    pull: 2831
+    issue: 43322
+    message: |-
+      嵌套的视图现在也可以根据名称搜索了。
+  # pull: 3993 Removing forgotten mention of now-deleted -remoting CLI option
+- version: 2.175
+  date: 2019-04-28
+  changes:
+    - type: rfe
+      pull: 3952
+      issue: 16750
+      message: |-
+        当构建完成后，更新状态图标
+    - type: rfe
+      pull: 3985
+      issue: 56477
+      message: |-
+        插件管理页面提供了更方便的插件更新选项，包括：“全选”、“兼容的“或”全不选“。
+        “兼容”的选择（之前为“全选”）已经不再包括含有任何兼容性警告的插件。
+    - type: rfe
+      pull: 3998
+      message: |-
+        从连接 Jenkins 节点的界面上移除会误导到 Java Web Start 和 JNLP 的链接等引用。
+    - type: rfe
+      pull: 3999
+      message: |-
+        再次启用 Stapler 请求分发 telemetry。
+    - type: rfe
+      issue: 47896
+      pull: 3980
+      message: |-
+        确保远程对象仅通过远程通道被序列化。
+        确定永远不会设计以 XML 形式持久化到磁盘中的类包括：
+        <code>FilePath</code>, <code>[Stream]TaskListener</code>, and <code>ProcessTree</code>.
+    - type: bug
+      pull: 3987
+      issue: 57071
+      message: |-
+        修复在 Linux 代理安装器中看到的一些错误。
+    - type: bug
+      issue: 57096
+      message: |-
+        使得 Debian/Ubuntu 启动器脚本对 Java 11 兼容。
+    - type: rfe
+      pull: 3984
+      message: |-
+        开发者：使得<code>mvn -f war hudson-dev:run</code>支持<code>${port}</code>。
+    # pull: 3873 ([JENKINS-55829] New getter method in AbstractCIBase)
+    # pull: 3978 (Update Dockerfile)
+    # pull: 3986 (Making ConfidentialKey instances safe to keep in static fields even across JenkinsRule starts)
+    # pull: 3990 (Bump to more recent tip of ATH)
+    # pull: 3995 (Add section for agent to master configuration)
+- version: 2.176
+  date: 2019-05-05
+  changes:
+    - type: major rfe
+      pull: 4011
+      issue: 57244
+      message: |-
+        在 2.175 中有些插件可能会失败，并会有一个与序列化 <code>FilePath</code> 有关的错误。
+        现在，这已被降级为警告。
+        插件更新仍然应该被用来修正潜在的错误。
+    - type: rfe
+      pull: 3686
+      issue: 11888
+      message: |-
+        添加 <code>stop-job</code> CLI命令，该命令允许中止构建。
+    - type: rfe
+      pull: 4005
+      references:
+        - issue: 51004
+        - issue: 57107
+        - issue: 46515
+        - url: https://github.com/jenkinsci/remoting/blob/master/CHANGELOG.md#330
+          title: 完整的变更日志
+      message: |-
+        将 Remoting 从3.29更新到3.30，以修复一些较小的问题。
+    - type: rfe
+      pull: 4008
+      message: |-
+        将所有中文本地化资源迁移到<a href="https://plugins.jenkins.io/localization-zh-cn">本地化:中文(简体)插件</a>。
+    - type: bug
+      pull: 4004
+      issue: 57273
+      message: |-
+        当 <code>Jenkins#addNode</code> 或 <code>Nodes#addNode</code> 实际替换现有节点时，<code>NodeListener#onCreated</code> 被调用。
+    - type: rfe
+      pull: 4006
+      message: |-
+        开发者：在 classpath 中包含 CLI 模块生成的源文件。
+    # pull: 4012 Run.keepLog-related names were misleading
+    # pull: 3936 [JENKINS-56499] Remove synchronized on method updateUsageForId for API token usage stat
+- version: 2.177
+  date: 2019-05-12
+  changes:
+    - type: rfe
+      references:
+        - url: https://jenkins.io/doc/pipeline/steps/core/#fingerprint-record-fingerprints-of-files-to-track-usage
+          title: 文档
+        - pull: 3915
+      message: |-
+        支持在流水线或其它任务类型的 <code>fingerprint()</code> 构建步骤中设置排除和区分大小写。
+    - type: rfe
+      pull: 3997
+      message: |-
+        允许通过不同的阴影构建球区分新任务、禁用的任务和中止构建的任务。
+    - type: rfe
+      pull: 4010
+      references:
+        - issue: 51577
+        - url: https://github.com/jenkinsci/windows-slave-installer-module/blob/master/CHANGELOG.md#111
+          title: 完整的变更日志
+      message: |-
+        将 Windows 代理安装程序从1.10.0更新到1.11，当在 .NET 4.6 或更新版本运行时，在代理下载时启用 TLS 1.2。
+    - type: rfe
+      references:
+        - pull: 4016
+        - url: https://github.com/jenkinsci/winstone/blob/master/CHANGELOG.md#53
+          title: 完整的变更日志
+        - title: Jetty 9.4.18变更日志
+          url: https://github.com/eclipse/jetty.project/releases/tag/jetty-9.4.18.v20190429
+        - title: Jetty 9.4.17变更日志
+          url: https://github.com/eclipse/jetty.project/releases/tag/jetty-9.4.17.v20190418
+        - title: Jetty 9.4.16变更日志
+          url: https://github.com/eclipse/jetty.project/releases/tag/jetty-9.4.16.v20190411
+      message: |-
+        将 Winstone-Jetty 从5.2更新到5.3以更新 Jetty 到 9.4.18。
+
+    - type: bug
+      pull: 4014
+      issue: 57412
+      message: |-
+        恢复安装向导使用的中文本地化资源。(在2.176中回归)。
+    - type: bug
+      pull: 4015
+      issue: 57111
+      message: |-
+        健壮性：对于 <code>ComputerListener#onOnline()</code> 中的运行时异常，不要将代理脱机。
+    - type: bug
+      pull: 3915
+      issue: 41696
+      message: |-
+        由于排除筛选，不要为存档制品中不包含的文件记录指纹。
+    - type: rfe
+      pull: 4018
+      message: |-
+        开发者：使 <code>UserSeedProperty</code> 对插件开发人员可用。
+    - type: rfe
+      pull: 3922
+      issue: 56379
+      message: |-
+        开发者：添加对 <code>titleClassMethod</code> 的支持（从流水线中的 <code>symbol-hetero-list</code> ）到 <code>f:hetero-list</code>.
+    # pull: 3975 `Internal:` Internal Java code cleanup
+    # pull: 4013 [JENKINS-11888] Cleanup StopBuildsCommandTest
+    # pull: 4017 Remove manag_.groovy
+    # pull: 4019 Update one message in Polish translation (typo fix)
+- version: 2.178
+  date: 2019-05-20
+  changes:
+    - type: bug
+      pull: 4021
+      issue: 25369
+      message: |-
+        将 jmDNS 从3.4.0-jenkins-3更新到3.5.5，以防止不必要的 DNS 组播错误消息。
+    - type: bug
+      pull: 4029
+      references:
+      - issue: 57477
+      - url: https://github.com/kohsuke/winp/blob/master/CHANGELOG.md#128
+        title: 完整的变更日志
+      message: |-
+        将 WinP 从1.27更新到1.28，以修复 Windows 优雅进程关闭逻辑中缺少 DLL 和控制台窗口闪烁的问题。
+    - type: bug
+      pull: 4000
+      issue: 57528
+      message: |-
+        确保独立的插件(插件曾经是 Jenkins 本身的一部分功能)在 Jenkins 启动时(需要时)作为已经存在的其他插件的隐含依赖项安装。
+        这简化了不使用更新中心的特殊安装场景的兼容性，例如当 Jenkins 从预先打包了一些插件的 Docker 镜像运行时。
+    - type: rfe
+      pull: 4000
+      message: |-
+        将脚本安全插件的捆绑版本与最新的安全警告一起更新，在不太可能的情况下，它确实是从 WAR 而不是更新中心安装的。
+    # pull: 4024 too minor (PR title: IntelliJ/HTML(fr): Start tag has wrong closing tag)
+    # pull: 4020 (PR title: Java cleanup)
+    # pull: 4028 ([JENKINS-21024] assertEquals between objects of inconvertible types)
+- version: 2.179
+  date: 2019-05-26
+  changes:
+    - type: rfe
+      pull: 4039
+      issue: 55582
+      message: |-
+        在 2.178 中对禁用的插件的处理可能会对使用了不合适的文件名打包自定义 Jenkins 协议导致一些问题。
+        现在，这些情况至少会有警告，而有些则已经无缝地处理过了。
+    - type: rfe
+      pull: 3921
+      issue: 55787
+      message: |-
+        将配置表单中大多数的布尔值选项修改为 checkbox 。
+    - type: rfe
+      pull: 4032
+      message: |-
+        开发者：使得类 <code>XMLUtils</code> 里有关安全地处理 XML 的方法对插件可用。
+    # pull: 4037 too minor (Internal: Add the javadoc for the new class `JenkinsJmDNS`)
+    # pull: 4044 irrelevant (Use the sponsor button to link to our donation page)
+    # pull: 4043 too minor (Switch translations for 2 labels in iconSize_pl.properties)
+    # pull: 4031 too minor (Add an example how to launch agent with secret not on command line)
 
 
 # DO NOT EDIT THIS FILE DIRECTLY
